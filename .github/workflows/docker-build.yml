@@ -45,10 +45,10 @@ jobs:
       - name: Build Docker Image
         if: env.BUILD_REQUIRED == 'true'
         run: |
-          docker build -t my-docker-image:latest .
+          docker build -t myvscode:latest .
 
       - name: Push Docker Image
         if: env.BUILD_REQUIRED == 'true'
         run: |
-          docker tag my-docker-image:latest ${{ secrets.DOCKERHUB_USERNAME }}/my-docker-image:latest
+          docker tag myvscode:latest ${{ secrets.DOCKERHUB_USERNAME }}/myvscode:latest
           docker
