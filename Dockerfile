@@ -3,10 +3,6 @@ FROM gitpod/openvscode-server:latest
 USER root
 
 # Set environment variables
-ARG EXERCISM_VERSION
-ARG EXERCISM_TOKEN
-ARG EXERCISM_WORKSPACE
-ENV EXERCISM_VERSION=${EXERCISM_VERSION}
 ENV EXERCISM_TOKEN=${EXERCISM_TOKEN}
 ENV EXERCISM_WORKSPACE=${EXERCISM_WORKSPACE}
 ENV GOROOT=/usr/local/go
@@ -38,18 +34,21 @@ RUN curl -sSL "https://golang.org/dl/?mode=json" | jq -r '.[0].files[] | select(
 RUN mkdir -p /go/src /go/bin && \
     chmod -R 777 /go
 
-# Fetch the latest version of Exercism CLI and unpack it
-RUN curl -L https://github.com/exercism/cli/releases/download/v${EXERCISM_VERSION}/exercism-${EXERCISM_VERSION}-linux-x86_64.tar.gz -o exercism.tar.gz && \
+# Fetch the latest Exercism CLI version dynamically
+RUN EXERCISM_VERSION=$(curl -s https://api.github.com/repos/exercism/cli/releases/latest | jq -r .tag_name | sed 's/^v//') && \
+    curl -L "https://github.com/exercism/cli/releases/download/v${EXERCISM_VERSION}/exercism-${EXERCISM_VERSION}-linux-x86_64.tar.gz" -o exercism.tar.gz && \
     tar -xvzf exercism.tar.gz && \
     rm exercism.tar.gz && \
     mv exercism /usr/bin
 
-# Configure Exercism CLI
-RUN exercism configure -t=${EXERCISM_TOKEN} -w=${EXERCISM_WORKSPACE}
+# DO NOT SET EXERCISM_TOKEN, GIT_USERNAME, GIT_EMAIL in ENV
+# They will be passed at runtime instead
 
-#USER shahram
+# Create workspace directory
+RUN mkdir -p /home/workspace
 
-RUN git config --global user.name "${GIT_USERNAME}"
-RUN git config --global user.email "${GIT_EMAIL}"
-
-# USER openvscode-server
+# Set Git config and Exercism CLI token at runtime
+CMD git config --global user.name "$GIT_USERNAME" && \
+    git config --global user.email "$GIT_EMAIL" && \
+    exercism configure --token "$EXERCISM_TOKEN" --workspace /home/workspace && \
+    exec /entrypoint.sh
