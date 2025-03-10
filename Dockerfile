@@ -53,7 +53,7 @@ RUN EXERCISM_VERSION=$(curl -s https://api.github.com/repos/exercism/cli/release
 RUN mkdir -p /home/workspace
 
 # installing the extentions
-RUN exts="golang/Go ms-toolsai/jupyter ms-toolsai/jupyter-keymap ms-python/python" && \
+RUN exts="golang/Go ms-toolsai/jupyter ms-python/python" && \
     for ext in $exts; do \
         echo "Fetching metadata for ${ext}..." && \
         url=$(curl -s "https://open-vsx.org/api/${ext}/latest" | jq -r '.files.download') && \
