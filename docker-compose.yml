@@ -1,0 +1,32 @@
+services:
+  myvscode:
+    image: shahram7/myvscode:latest
+    container_name: code
+    env_file:
+      - .env
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}    
+      - GOROOT=${GOROOT}
+      - GOPATH=${GOPATH}
+      - PATH=${PATH}
+      - EXERCISM_TOKEN=${EXERCISM_TOKEN}
+      - EXERCISM_WORKSPACE=${EXERCISM_WORKSPACE}
+      - GIT_USERNAME=${GIT_USERNAME}
+      - GIT_EMAIL=${GIT_EMAIL}
+      - DEFAULT_WORKSPACE=${DEFAULT_WORKSPACE}
+    volumes:
+      - config:/config
+      - /var/lib/docker:/docker
+    ports:
+      - 3000:3000
+    restart: unless-stopped
+    # uncomment this lines if you're using watchtower
+    # labels:
+      # - "com.centurylinklabs.watchtower.enable=true"      
+    logging:
+      options:
+        max-size: 1m
+volumes:
+  config:
