@@ -1,5 +1,18 @@
 #!/bin/bash
-set -e
+
+# Display Go version
+if command -v go &> /dev/null; then
+    echo "✅ Go installed: $(go version)"
+else
+    echo "❌ Go is NOT installed!"
+fi
+
+# Display Exercism version
+if command -v exercism &> /dev/null; then
+    echo "✅ Exercism CLI installed: $(exercism version)"
+else
+    echo "❌ Exercism CLI is NOT installed!"
+fi
 
 # Configure Git (only if variables are set)
 if [ -n "$GIT_USERNAME" ] && [ -n "$GIT_EMAIL" ]; then
