@@ -21,8 +21,7 @@ services:
       - /var/lib/docker:/docker
     ports:
       - 3000:3000
-    # uncomment this lines if you're using watchtower
-    # labels:
+    # labels:  # uncomment this lines if you're using watchtower
       # - "com.centurylinklabs.watchtower.enable=true"      
     logging:
       options:
