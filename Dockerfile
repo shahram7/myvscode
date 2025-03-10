@@ -62,7 +62,7 @@ COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
 # to restore permissions for the web interface
-USER openvscode-server
+# USER openvscode-server
 
 # Default exposed port if none is specified
 ENTRYPOINT ["/entrypoint.sh"]
