@@ -53,5 +53,5 @@ RUN echo "alias ll='ls -la'" >> /etc/bash.bashrc
 # Entry script for setting up Git and Exercism CLI at runtime
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
-
-CMD ["/entrypoint.sh"]
+ENTRYPOINT ["/entrypoint.sh"]
+# CMD ["/entrypoint.sh"]
