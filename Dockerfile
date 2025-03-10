@@ -65,5 +65,4 @@ RUN chmod +x /entrypoint.sh
 USER openvscode-server
 
 # Default exposed port if none is specified
-# we run entrypoint.sh in our compose file
-# ENTRYPOINT ["/entrypoint.sh"]
+ENTRYPOINT ["/entrypoint.sh"]
