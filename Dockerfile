@@ -53,15 +53,14 @@ RUN EXERCISM_VERSION=$(curl -s https://api.github.com/repos/exercism/cli/release
 RUN mkdir -p /home/workspace
 
 # installing the extentions
-RUN exts="golang/go ms-toolsai/jupyter ms-toolsai/jupyter-keymap ms-python/python" && \
-    # Install extensions directly from the marketplace using the open-vsx API
+RUN exts="golang/Go ms-toolsai/jupyter ms-toolsai/jupyter-keymap ms-python/python" && \
     for ext in $exts; do \
-        echo "Fetching URL for ${ext}..." && \
-        url=$(curl -s "https://open-vsx.org/api/${ext}/latest/download" | jq -r '.url') && \
+        echo "Fetching metadata for ${ext}..." && \
+        url=$(curl -s "https://open-vsx.org/api/${ext}/latest" | jq -r '.files.download') && \
         echo "Downloading ${ext} from ${url}..." && \
-        wget -q "${url}" -O "/tmp/${ext}.vsix" && \
-        ${OPENVSCODE} --install-extension "/tmp/${ext}.vsix" && \
-        rm -f "/tmp/${ext}.vsix"; \
+        wget -q "${url}" -O "/tmp/${ext##*/}.vsix" && \
+        ${OPENVSCODE} --install-extension "/tmp/${ext##*/}.vsix" && \
+        rm -f "/tmp/${ext##*/}.vsix"; \
     done
 
 # Set alias for ll to work
