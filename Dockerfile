@@ -55,18 +55,12 @@ RUN mkdir -p /home/workspace
 # installing the extentions
 RUN \
     # Define the extensions you want to install
-    exts=(\
-        "golang.Go" \
-        "ms-toolsai.jupyter" \
-        "ms-toolsai.jupyter-keymap" \
-        "ms-python.python" \
-    ) \
-    && \
+    exts="golang.Go ms-toolsai.jupyter ms-toolsai.jupyter-keymap ms-python.python" && \
     # Install extensions directly from the marketplace using the open-vsx API
-    for ext in "${exts[@]}"; do \
-        # Get the latest .vsix URL from open-vsx
+    for ext in $exts; do \
+        echo "Fetching URL for ${ext}..." && \
         url=$(curl -s "https://open-vsx.org/api/${ext}/latest/download" | jq -r '.url') && \
-        # Download and install the extension
+        echo "Downloading ${ext} from ${url}..." && \
         wget -q "${url}" -O "/tmp/${ext}.vsix" && \
         ${OPENVSCODE} --install-extension "/tmp/${ext}.vsix" && \
         rm -f "/tmp/${ext}.vsix"; \
