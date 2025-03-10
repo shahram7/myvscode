@@ -53,7 +53,7 @@ RUN EXERCISM_VERSION=$(curl -s https://api.github.com/repos/exercism/cli/release
 RUN mkdir -p /home/workspace
 
 # installing the extentions
-RUN exts="golang.Go ms-toolsai.jupyter ms-toolsai.jupyter-keymap ms-python.python" && \
+RUN exts="golang/go ms-toolsai/jupyter ms-toolsai/jupyter-keymap ms-python/python" && \
     # Install extensions directly from the marketplace using the open-vsx API
     for ext in $exts; do \
         echo "Fetching URL for ${ext}..." && \
