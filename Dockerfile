@@ -47,6 +47,9 @@ RUN EXERCISM_VERSION=$(curl -s https://api.github.com/repos/exercism/cli/release
 # DO NOT SET EXERCISM_TOKEN, GIT_USERNAME, GIT_EMAIL in ENV (They will be passed at runtime)
 RUN mkdir -p /home/workspace
 
+# Set alias for ll to work
+RUN echo "alias ll='ls -la'" >> /etc/bash.bashrc
+
 # Entry script for setting up Git and Exercism CLI at runtime
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
