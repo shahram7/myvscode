@@ -1,5 +1,10 @@
 FROM gitpod/openvscode-server:latest
 
+ENV OPENVSCODE_SERVER_ROOT="/home/.openvscode-server"
+ENV OPENVSCODE="${OPENVSCODE_SERVER_ROOT}/bin/openvscode-server"
+
+SHELL ["/bin/bash", "-c"]
+
 USER root
 
 # Install dependencies
@@ -11,6 +16,8 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y --no-install-reco
     tar \
     python3 \
     python3-pip \
+    sudo \
+    libatomic1 \
     && rm -rf /var/lib/apt/lists/*
 
 # Fetch the latest version of Go and install it
@@ -53,5 +60,7 @@ RUN echo "alias ll='ls -la'" >> /etc/bash.bashrc
 # Entry script for setting up Git and Exercism CLI at runtime
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
+# Default exposed port if none is specified
+EXPOSE 3000
 ENTRYPOINT ["/entrypoint.sh"]
 # CMD ["/entrypoint.sh"]
