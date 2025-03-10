@@ -20,7 +20,4 @@ fi
 
 # Start OpenVSCode Server (ensure it's the last command in the entrypoint)
 echo "Starting OpenVSCode..."
-exec /home/gitpod/openvscode-server/bin/openvscode-server --host 0.0.0.0 --port 3000 || {
-    echo "OpenVSCode failed to start!" 
-    exit 1
-}
+exec ${OPENVSCODE_SERVER_ROOT}/bin/openvscode-server --host 0.0.0.0 --without-connection-token "$@"
