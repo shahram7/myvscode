@@ -50,9 +50,27 @@ RUN EXERCISM_VERSION=$(curl -s https://api.github.com/repos/exercism/cli/release
     rm exercism.tar.gz && \
     mv exercism /usr/bin && \
     echo "✅ Exercism CLI version $EXERCISM_VERSION installed."
-
-# DO NOT SET EXERCISM_TOKEN, GIT_USERNAME, GIT_EMAIL in ENV (They will be passed at runtime)
 RUN mkdir -p /home/workspace
+
+# installing the extentions
+RUN \
+    # Define the extensions you want to install
+    exts=(\
+        "golang.Go" \
+        "ms-toolsai.jupyter" \
+        "ms-toolsai.jupyter-keymap" \
+        "ms-python.python" \
+    ) \
+    && \
+    # Install extensions directly from the marketplace using the open-vsx API
+    for ext in "${exts[@]}"; do \
+        # Get the latest .vsix URL from open-vsx
+        url=$(curl -s "https://open-vsx.org/api/${ext}/latest/download" | jq -r '.url') && \
+        # Download and install the extension
+        wget -q "${url}" -O "/tmp/${ext}.vsix" && \
+        ${OPENVSCODE} --install-extension "/tmp/${ext}.vsix" && \
+        rm -f "/tmp/${ext}.vsix"; \
+    done
 
 # Set alias for ll to work
 RUN echo "alias ll='ls -la'" >> /etc/bash.bashrc
