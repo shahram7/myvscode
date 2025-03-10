@@ -17,7 +17,3 @@ if [ -n "$EXERCISM_TOKEN" ] && [ -n "$EXERCISM_WORKSPACE" ]; then
 else
     echo "⚠️ Exercism token or workspace not provided, skipping Exercism configuration."
 fi
-
-# Start OpenVSCode Server (ensure it's the last command in the entrypoint)
-echo "Starting OpenVSCode..."
-exec ${OPENVSCODE} --host 0.0.0.0 --without-connection-token "$@"
