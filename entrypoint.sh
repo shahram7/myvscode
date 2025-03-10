@@ -1,18 +1,5 @@
 #!/bin/bash
-
-# Display Go version
-if command -v go &> /dev/null; then
-    echo "✅ Go installed: $(go version)"
-else
-    echo "❌ Go is NOT installed!"
-fi
-
-# Display Exercism version
-if command -v exercism &> /dev/null; then
-    echo "✅ Exercism CLI installed: $(exercism version)"
-else
-    echo "❌ Exercism CLI is NOT installed!"
-fi
+set -e
 
 # Configure Git (only if variables are set)
 if [ -n "$GIT_USERNAME" ] && [ -n "$GIT_EMAIL" ]; then
@@ -30,3 +17,10 @@ if [ -n "$EXERCISM_TOKEN" ] && [ -n "$EXERCISM_WORKSPACE" ]; then
 else
     echo "⚠️ Exercism token or workspace not provided, skipping Exercism configuration."
 fi
+
+# Start OpenVSCode Server (ensure it's the last command in the entrypoint)
+echo "Starting OpenVSCode..."
+exec /home/gitpod/openvscode-server/bin/openvscode-server --host 0.0.0.0 --port 3000 || {
+    echo "OpenVSCode failed to start!" 
+    exit 1
+}
