@@ -20,4 +20,4 @@ fi
 
 # Start OpenVSCode Server (ensure it's the last command in the entrypoint)
 echo "Starting OpenVSCode..."
-exec ${OPENVSCODE_SERVER_ROOT}/bin/openvscode-server --host 0.0.0.0 --without-connection-token "$@"
+exec ${OPENVSCODE} --host 0.0.0.0 --without-connection-token "$@"
