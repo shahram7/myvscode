@@ -17,3 +17,12 @@ if [ -n "$EXERCISM_TOKEN" ] && [ -n "$EXERCISM_WORKSPACE" ]; then
 else
     echo "⚠️ Exercism token or workspace not provided, skipping Exercism configuration."
 fi
+
+if [ -n "$SETTINGS_JSON_PATH" ]; then
+    mkdir -p "$DEFAULT_WORKSPACE/.openvscode-server/data/Machine"
+    cp "$SETTINGS_JSON_PATH"/settings.json "$DEFAULT_WORKSPACE"/.openvscode-server/data/Machine/settings.json
+    cp "$SETTINGS_JSON_PATH"/keybindings.json "$DEFAULT_WORKSPACE"/.openvscode-server/data/Machine/keybindings.json
+    chown -R workspace:workspace "$DEFAULT_WORKSPACE/.openvscode-server/data/Machine"
+    cp "$SETTINGS_JSON_PATH"/settings.json /home/workspace/.openvscode-server/data/Machine/settings.json
+    cp "$SETTINGS_JSON_PATH"/keybindings.json /home/workspace/.openvscode-server/data/Machine/keybindings.json
+fi
