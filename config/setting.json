@@ -1,0 +1,16 @@
+{
+    // "workbench.colorTheme": "Default Dark+",
+    "files.autoSave": "afterDelay",
+    "editor.fontSize": 14,
+    "workbench.editorAssociations": {
+      "*.md": "vscode.markdown.preview.editor"
+    },
+    "window.openFoldersInNewWindow": "off",
+    "terminal.integrated.commandsToSkipShell": [
+      "workbench.action.debug.stepInto",
+      "workbench.action.debug.stepOver",
+      "workbench.action.debug.stepOut",
+      "workbench.action.debug.continue"
+    ],
+    "window.menuBarVisibility": "classic"
+}
