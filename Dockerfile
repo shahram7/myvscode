@@ -18,6 +18,7 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y --no-install-reco
     python3-pip \
     sudo \
     libatomic1 \
+    tmux \
     && rm -rf /var/lib/apt/lists/*
 
 # Fetch the latest version of Go and install it
