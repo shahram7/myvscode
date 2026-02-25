@@ -19,4 +19,10 @@ else
 fi
 
 # --- Start OpenVSCode Server ---
-exec /home/.openvscode-server/bin/openvscode-server "$@"
+
+exec /home/.openvscode-server/bin/openvscode-server \
+  --host=0.0.0.0 \
+  --port=3000 \
+  --without-connection-token \
+  "$@"
+
