@@ -71,9 +71,6 @@ RUN echo "alias ll='ls -la'" >> /etc/bash.bashrc
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
-# to restore permissions for the web interface
-# USER openvscode-server
-
 # Default exposed port if none is specified
 #ENTRYPOINT ["/entrypoint.sh"]
-ENTRYPOINT [ "/bin/sh", "-c", "/entrypoint.sh && exec ${OPENVSCODE_SERVER_ROOT}/bin/openvscode-server --host 0.0.0.0 --without-connection-token --user-data-dir=/user-dat \"${@}\"", "--" ]
+ENTRYPOINT [ "/bin/sh", "-c", "/entrypoint.sh && exec ${OPENVSCODE_SERVER_ROOT}/bin/openvscode-server --accept-server-license-terms --host=0.0.0.0 --port=3000 --without-connection-token --user-data-dir=/user-data \"${@}\"", "--" ]
