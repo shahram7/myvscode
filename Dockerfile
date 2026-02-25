@@ -76,4 +76,4 @@ RUN chmod +x /entrypoint.sh
 
 # Default exposed port if none is specified
 #ENTRYPOINT ["/entrypoint.sh"]
-ENTRYPOINT [ "/bin/sh", "-c", "/entrypoint.sh && exec ${OPENVSCODE_SERVER_ROOT}/bin/openvscode-server --host 0.0.0.0 --without-connection-token \"${@}\"", "--" ]
+ENTRYPOINT [ "/bin/sh", "-c", "/entrypoint.sh && exec ${OPENVSCODE_SERVER_ROOT}/bin/openvscode-server --host 0.0.0.0 --without-connection-token --user-data-dir=/user-dat \"${@}\"", "--" ]
