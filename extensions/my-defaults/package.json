@@ -7,7 +7,8 @@
   "categories": ["Other"],
   "contributes": {
     "configurationDefaults": {
-      "workbench.colorTheme": "Default High Contrast",
+      "workbench.colorTheme": "Default High Contrast Light",
+      "window.menuBarVisibility": "classic",
       "files.autoSave": "afterDelay",
       "editor.fontSize": 14,
       "workbench.editorAssociations": {
@@ -20,7 +21,6 @@
         "workbench.action.debug.stepOut",
         "workbench.action.debug.continue"
       ],
-      "window.menuBarVisibility": "classic",
       "workbench.startupEditor": "none",
       "terminal.integrated.profiles.osx": {
         "tmux-shell": {
