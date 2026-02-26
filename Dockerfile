@@ -19,6 +19,7 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y --no-install-reco
     sudo \
     libatomic1 \
     tmux \
+    openssl \
     && rm -rf /var/lib/apt/lists/*
 
 # Fetch the latest version of Go and install it
@@ -71,6 +72,14 @@ COPY my-defaults.vsix /tmp/my-defaults.vsix
 RUN ${OPENVSCODE} --install-extension /tmp/my-defaults.vsix && \
     rm -f /tmp/my-defaults.vsix
 
+# create self-signed certificates
+RUN mkdir -p /certs
+
+RUN openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+    -keyout /certs/server.key \
+    -out /certs/server.crt \
+    -subj "/CN=localhost"
+
 # Set alias for ll to work
 RUN echo "alias ll='ls -la'" >> /etc/bash.bashrc
 
@@ -80,4 +89,4 @@ RUN chmod +x /entrypoint.sh
 
 # Default exposed port if none is specified
 #ENTRYPOINT ["/entrypoint.sh"]
-ENTRYPOINT [ "/bin/sh", "-c", "/entrypoint.sh && exec ${OPENVSCODE_SERVER_ROOT}/bin/openvscode-server --accept-server-license-terms --host=0.0.0.0 --port=3000 --without-connection-token \"${@}\"", "--" ]
+ENTRYPOINT [ "/bin/sh", "-c", "/entrypoint.sh && exec ${OPENVSCODE_SERVER_ROOT}/bin/openvscode-server --accept-server-license-terms --host=0.0.0.0 --port=3000 --without-connection-token --cert=/certs/server.crt --cert-key=/certs/server.key \"${@}\"", "--" ]
