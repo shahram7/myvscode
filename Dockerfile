@@ -78,7 +78,8 @@ RUN mkdir -p /certs
 RUN openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
     -keyout /certs/server.key \
     -out /certs/server.crt \
-    -subj "/CN=localhost"
+    -subj "/CN=192.168.178.100" \
+    -addext "subjectAltName=IP:192.168.178.100,IP:127.0.0.1"
 
 # Set alias for ll to work
 RUN echo "alias ll='ls -la'" >> /etc/bash.bashrc
