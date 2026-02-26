@@ -20,6 +20,7 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y --no-install-reco
     libatomic1 \
     tmux \
     openssl \
+    nginx \
     && rm -rf /var/lib/apt/lists/*
 
 # Fetch the latest version of Go and install it
@@ -81,6 +82,19 @@ RUN openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
     -subj "/CN=192.168.178.100" \
     -addext "subjectAltName=IP:192.168.178.100,IP:127.0.0.1"
 
+RUN echo 'server { \
+    listen 8443 ssl; \
+    ssl_certificate /certs/server.crt; \
+    ssl_certificate_key /certs/server.key; \
+    location / { \
+        proxy_pass http://localhost:3000; \
+        proxy_http_version 1.1; \
+        proxy_set_header Upgrade $http_upgrade; \
+        proxy_set_header Connection "upgrade"; \
+        proxy_set_header Host $host; \
+    } \
+}' > /etc/nginx/sites-available/default
+
 # Set alias for ll to work
 RUN echo "alias ll='ls -la'" >> /etc/bash.bashrc
 
@@ -90,4 +104,4 @@ RUN chmod +x /entrypoint.sh
 
 # Default exposed port if none is specified
 #ENTRYPOINT ["/entrypoint.sh"]
-ENTRYPOINT [ "/bin/sh", "-c", "/entrypoint.sh && exec ${OPENVSCODE_SERVER_ROOT}/bin/openvscode-server --accept-server-license-terms --host=0.0.0.0 --port=3000 --without-connection-token --cert=/certs/server.crt --cert-key=/certs/server.key \"${@}\"", "--" ]
+ENTRYPOINT [ "/bin/sh", "-c", "/entrypoint.sh && nginx && exec ${OPENVSCODE_SERVER_ROOT}/bin/openvscode-server --accept-server-license-terms --host=0.0.0.0 --port=3000 --without-connection-token \"${@}\"", "--" ]
