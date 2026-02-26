@@ -1,0 +1,80 @@
+{
+  "name": "your-org-defaults",
+  "displayName": "Your Org Defaults",
+  "version": "0.0.1",
+  "publisher": "your-org",
+  "engines": { "vscode": "^1.80.0" },
+  "categories": [ "Other" ],
+  "contributes": {
+    // 2a) GLOBAL DEFAULT SETTINGS (declarative)
+    "configurationDefaults": {
+  "workbench.colorTheme": "Default High Contrast",
+  "files.autoSave": "afterDelay",
+  "editor.fontSize": 14,
+  "workbench.editorAssociations": {
+    "*.md": "vscode.markdown.preview.editor"
+  },
+  "window.openFoldersInNewWindow": "off",
+  "terminal.integrated.commandsToSkipShell": [
+    "workbench.action.debug.stepInto",
+    "workbench.action.debug.stepOver",
+    "workbench.action.debug.stepOut",
+    "workbench.action.debug.continue"
+  ],
+  "window.menuBarVisibility": "classic",
+  "workbench.startupEditor": "none",
+  
+  "terminal.integrated.profiles.osx": {
+    //...existing profiles...
+    "tmux-shell": {
+      "path": "tmux",
+      "args": ["new-session", "-A", "-s", "vscode:${workspaceFolder}"]
+    } 
+  }
+}cat,
+
+    // 2b) DEFAULT KEYBINDINGS (declarative)
+    "keybindings": [
+    {
+        "key": "f5",
+        "command": "workbench.action.debug.stepInto",
+        "when": "debugState != 'inactive'"
+    },
+    {
+        "key": "alt+f11",
+        "command": "-workbench.action.debug.stepInto",
+        "when": "debugState != 'inactive'"
+    },
+    {
+        "key": "f6",
+        "command": "workbench.action.debug.stepOver",
+        "when": "debugState == 'stopped'"
+    },
+    {
+        "key": "f10",
+        "command": "-workbench.action.debug.stepOver",
+        "when": "debugState == 'stopped'"
+    },
+    {
+        "key": "f7",
+        "command": "workbench.action.debug.stepOut",
+        "when": "debugState == 'stopped'"
+    },
+    {
+        "key": "shift+f11",
+        "command": "-workbench.action.debug.stepOut",
+        "when": "debugState == 'stopped'"
+    },
+    {
+        "key": "f8",
+        "command": "workbench.action.debug.continue",
+        "when": "debugState == 'stopped'"
+    },
+    {
+        "key": "f5",
+        "command": "-workbench.action.debug.continue",
+        "when": "debugState == 'stopped'"
+    }
+    ]
+  }
+}
