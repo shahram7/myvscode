@@ -8,13 +8,66 @@ on:
       - main
   workflow_dispatch:  # Allows manual trigger
 
+
+concurrency:
+  group: docker-${{ github.ref }}
+  cancel-in-progress: true
+
+
 jobs:
-  build:
+  build_vsix:
+    name: Package my-defaults VSIX
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: extensions/my-defaults
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20.x"
+
+      # vsce is the official packager (creates .vsix)
+      - name: Install vsce
+        run: npm install -g @vscode/vsce
+
+      # If you have no build scripts, you can skip npm ci
+      # - run: npm ci
+
+      - name: Package extension
+        run: |
+          mkdir -p ../../dist
+          vsce package --out ../../dist/
+      - name: Upload VSIX artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: my-defaults-vsix
+          path: dist/*.vsix
+          if-no-files-found: error
+
+  build_image:
+  
+    name: Build & push Docker image (with VSIX baked in)
+    needs: build_vsix
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
+
+      - name: Download VSIX artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: my-defaults-vsix
+          path: .
+      - name: Normalize VSIX filename
+        run: |
+          # rename whatever came from dist/ to a fixed name used by the Dockerfile
+          mv *.vsix my-defaults.vsix
+          ls -l my-defaults.vsix
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v3
