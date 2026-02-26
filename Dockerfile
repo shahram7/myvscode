@@ -64,6 +64,13 @@ RUN exts="golang/Go ms-toolsai/jupyter ms-python/python stephlin/vscode-tmux-key
         rm -f "/tmp/${ext##*/}.vsix"; \
     done
 
+# Install my custom defaults extension from VSIX ---
+COPY my-defaults.vsix /tmp/my-defaults.vsix
+
+# Install as the 'openvscode-server' user (matches README pattern)
+RUN ${OPENVSCODE} --install-extension /tmp/my-defaults.vsix && \
+    rm -f /tmp/my-defaults.vsix
+
 # Set alias for ll to work
 RUN echo "alias ll='ls -la'" >> /etc/bash.bashrc
 
