@@ -1,8 +1,8 @@
 {
-  "name": "your-org-defaults",
-  "displayName": "Your Org Defaults",
+  "name": "My-Defaults",
+  "displayName": "My-Defaults",
   "version": "0.0.1",
-  "publisher": "your-org",
+  "publisher": "shahram7",
   "engines": { "vscode": "^1.80.0" },
   "categories": [ "Other" ],
   "contributes": {
